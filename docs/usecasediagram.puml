@@ -1,0 +1,39 @@
+@startuml usecase
+left to right direction
+
+rectangle "API Functionallity" {
+actor "Answer Survey System (Context)" as taker
+actor "Admin" as admin
+actor "Storage" as db  
+rectangle "Survey API" {
+  usecase  "Open surveys" as UCA
+  usecase  "Close surveys" as UC7
+  usecase "Create surveys" as UC2
+  usecase "Find surveys" as UC3
+  usecase "Login" as UC1
+  usecase "Simulate answers" as UC5
+  usecase "Simulate surveys" as UC9
+  usecase "Answer surveys" as UC6
+  usecase "Search Answers" as UC8
+}
+}
+
+admin -> taker : Extends
+
+admin --> UC1
+admin --> UC2
+admin --> UC7
+admin --> UCA
+taker --> UC6
+taker --> UC5
+taker --> UC9
+taker --> UC8
+taker  --> UC3
+
+
+
+UC6 --> db
+UC2 --> db
+UC7 --> db
+UCA --> db
+@enduml

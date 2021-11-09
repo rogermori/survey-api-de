@@ -1,0 +1,54 @@
+@startuml Domain Model
+rectangle "Core Class Diagram" {
+class Survey  {
+    id: BSON
+    question: String
+    status: "open","closed"
+    numberOfResponses: Number
+    numberOfAnwers: Number
+    batchId: String
+    createdBy: String
+    createdAt: Date
+    updatedAt: Date
+}
+
+class "SurveyResponse" as Response {
+    response: string
+    surveyId: Survey
+    answerId: SurveyAnswer
+    response: string 
+    status: "pending","completed"
+    contextId: Context
+    responseBatchId: string
+    createdAt: Date
+    updatedAt: Date
+}
+
+class SurveyAnswer {
+   id: BSON
+   surveyId: Survey
+   answer: string
+   numberOfResponses: Number
+   createdBy: String
+   createdAt: Date
+   updatedAt: Date
+}
+
+interface Context {
+  id: string
+  surveyTaker: user
+  anonimous: boolean
+  email: string
+  IPAddress: string
+  source: AnswerSurveySystem
+}
+
+Survey *-- "*" SurveyAnswer : contains
+Survey -- "*" Response : takes
+Context *-- "*" Response : answers
+
+note top of Context : External entity not modeled 
+note top of Survey: Surveys are created in batches
+note bottom of Response: Surveys are answered in a single context on one or more batches
+}
+@enduml

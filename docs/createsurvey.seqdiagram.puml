@@ -1,0 +1,32 @@
+@startuml create surveys
+hide footbox
+title Create Surveys
+participant Browser as browser
+participant Server as server
+participant Authenticator as auth
+participant Validator as valt
+participant SurveyController as controller
+participant SurveyService as service
+participant SurveyModel as model
+database    Database    as database
+
+browser -> server: POST /20210-10-1/surveys
+server -> auth: decode(jwt)
+auth -> server : authorized
+server -> valt : validate(request)
+valt -> valt : validate
+valt -> valt : sanitize
+valt -> server : valid
+server -> controller : handleRequest
+controller -> service : create
+service -> model : createSurvey
+model -> database : insert records
+note left: start and end transaction 
+database -> model 
+model -> service
+service -> controller 
+controller -> controller : add header and status code
+controller -> server : created payload 
+server -> browser : created
+
+@enduml

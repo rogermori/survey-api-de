@@ -1,0 +1,306 @@
+@host = http://localhost
+@port = 7777
+
+@version = 2021-11-01 
+@hostname = {{host}}:{{port}}/{{version}}
+
+
+
+@contentType =  application/json
+
+### Api Info
+GET {{hostname}}/info
+Content-Type: {{contentType}}
+
+### login
+# User and password must be at least 3 characters long
+POST {{hostname}}/login
+Content-Type: {{contentType}}
+
+{
+  "user":"roger",
+  "password": "anypassword"
+}
+
+
+### Generate a random set of surveys
+GET {{hostname}}/simulations/surveys
+Content-Type: {{contentType}}
+
+
+
+### 1 - Create a set of surveys
+@accessToken = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJyb2dlciIsImp0aSI6IjRlZDg2ODRjLWNjYmEtNDU2NS1iMGUyLTRkZDY1MjQ1OGQ5NSIsImlhdCI6MTYzNjQyODAzNywiZXhwIjoxNjM2NDMxNjM3fQ.kg8U9USyI7_3MkzbuEaiOynddT7qcZlSs5uVrBM3Ng0
+
+###
+POST {{hostname}}/surveys
+Content-Type: {{contentType}}
+Access-Token: {{accessToken}}
+
+[
+  {
+    "question": "animi voluptas modi",
+    "possibleAnswers": [
+      "e-tailers",
+      "Missouri",
+      "Louisiana",
+      "virtual",
+      "Practical",
+      "Peso",
+      "Soap",
+      "Plastic"
+    ]
+  },
+  {
+    "question": "atque dolorem voluptatem reprehenderit",
+    "possibleAnswers": [
+      "SSL",
+      "cohesive",
+      "invoice",
+      "payment",
+      "real-time",
+      "Avon"
+    ]
+  },
+  {
+    "question": "iure enim animi rem illo",
+    "possibleAnswers": ["XSS", "Granite"]
+  },
+  {
+    "question": "nobis aspernatur eos porro et",
+    "possibleAnswers": ["Orchestrator", "Multi-tiered"]
+  },
+  {
+    "question": "odit aut repellat",
+    "possibleAnswers": [
+      "New",
+      "Lead",
+      "Cocos",
+      "Soft",
+      "throughput",
+      "Account",
+      "Tools",
+      "multi-byte"
+    ]
+  },
+  {
+    "question": "aperiam amet aut rerum officiis",
+    "possibleAnswers": ["TCP", "Chief", "payment"]
+  },
+  {
+    "question": "quia est magni",
+    "possibleAnswers": [
+      "plum",
+      "deposit",
+      "revolutionize",
+      "bypass",
+      "Soap",
+      "pixel"
+    ]
+  },
+  {
+    "question": "repellat natus molestiae possimus fuga",
+    "possibleAnswers": [
+      "hacking",
+      "cyan",
+      "Jamaican",
+      "Computers",
+      "Arizona",
+      "programming"
+    ]
+  },
+  {
+    "question": "incidunt dignissimos iure necessitatibus",
+    "possibleAnswers": [
+      "Managed",
+      "Function-based",
+      "calculate",
+      "compressing",
+      "primary"
+    ]
+  },
+  {
+    "question": "provident ipsa quasi nihil suscipit",
+    "possibleAnswers": [
+      "optical",
+      "Delaware",
+      "connect",
+      "secondary",
+      "Technician",
+      "Center",
+      "hour",
+      "Lead"
+    ]
+  },
+  {
+    "question": "velit corrupti beatae",
+    "possibleAnswers": [
+      "Industrial",
+      "Brand",
+      "feed",
+      "Synchronised",
+      "cross-platform",
+      "PCI",
+      "bypass"
+    ]
+  },
+  {
+    "question": "similique dolor cupiditate",
+    "possibleAnswers": ["users", "Indiana"]
+  },
+  {
+    "question": "voluptatibus qui officia et dolor",
+    "possibleAnswers": [
+      "invoice",
+      "Grocery",
+      "purple",
+      "Account",
+      "Future",
+      "info-mediaries",
+      "Markets"
+    ]
+  },
+  {
+    "question": "error nostrum laborum perspiciatis",
+    "possibleAnswers": ["Games", "Bedfordshire", "Plastic", "up"]
+  }
+]
+
+
+### 2 Select batchId generated on #1 
+#     Fetch surveys by batchId
+@batchId = 6189e9fee939b3422e73c168
+GET {{hostname}}/surveys?batchId={{batchId}}&_limit=2&_page=0&&_sort[question]=DESC
+Content-Type: {{contentType}}
+
+### Fetch a single Survey info
+@surveyId = 6189e9fee939b3422e73c172
+GET {{hostname}}/surveys/{{surveyId}}
+Content-Type: {{contentType}}
+
+### Close surveys
+PUT {{hostname}}/surveys/{{batchId}}/open
+Content-Type: {{contentType}}
+Access-Token: {{accessToken}}
+
+### Open surveys
+PUT {{hostname}}/surveys/{{batchId}}/closed
+Content-Type: {{contentType}}
+Access-Token: {{accessToken}}
+
+###
+# Simulate answers by batchId
+GET {{hostname}}/simulations/answers?batchId={{batchId}}
+Content-Type: {{contentType}}
+
+
+### Create/Update survey's responses
+#   The service return a response's batchId
+#   A set of surveys are answered in a single context
+@contextId = 123456789012345678901237
+POST {{hostname}}/responses/contexts/{{contextId}}
+Content-Type: {{contentType}}
+
+[
+  {
+    "surveyId": "6189e9fee939b3422e73c169",
+    "answerId": "6189e9fee939b3422e73c16a",
+    "response": "e-tailers",
+    "status": "pending"
+  },
+  {
+    "surveyId": "6189e9fee939b3422e73c188",
+    "answerId": "6189e9fee939b3422e73c18b",
+    "response": "payment",
+    "status": "completed"
+  },
+  {
+    "surveyId": "6189e9fee939b3422e73c172",
+    "answerId": "6189e9fee939b3422e73c177",
+    "response": "real-time",
+    "status": "completed"
+  },
+  {
+    "surveyId": "6189e9fee939b3422e73c1bc",
+    "answerId": "6189e9fee939b3422e73c1c0",
+    "response": "up",
+    "status": "pending"
+  },
+  {
+    "surveyId": "6189e9fee939b3422e73c19a",
+    "answerId": "6189e9fee939b3422e73c19e",
+    "response": "compressing",
+    "status": "completed"
+  },
+  {
+    "surveyId": "6189e9fee939b3422e73c179",
+    "answerId": "6189e9fee939b3422e73c17a",
+    "response": "XSS",
+    "status": "completed"
+  },
+  {
+    "surveyId": "6189e9fee939b3422e73c17c",
+    "answerId": "6189e9fee939b3422e73c17d",
+    "response": "Orchestrator",
+    "status": "pending"
+  },
+  {
+    "surveyId": "6189e9fee939b3422e73c17f",
+    "answerId": "6189e9fee939b3422e73c187",
+    "response": "multi-byte",
+    "status": "completed"
+  },
+  {
+    "surveyId": "6189e9fee939b3422e73c1a0",
+    "answerId": "6189e9fee939b3422e73c1a6",
+    "response": "Center",
+    "status": "completed"
+  },
+  {
+    "surveyId": "6189e9fee939b3422e73c18c",
+    "answerId": "6189e9fee939b3422e73c18d",
+    "response": "plum",
+    "status": "pending"
+  },
+  {
+    "surveyId": "6189e9fee939b3422e73c193",
+    "answerId": "6189e9fee939b3422e73c195",
+    "response": "cyan",
+    "status": "completed"
+  },
+  {
+    "surveyId": "6189e9fee939b3422e73c1b1",
+    "answerId": "6189e9fee939b3422e73c1b3",
+    "response": "Indiana",
+    "status": "pending"
+  },
+  {
+    "surveyId": "6189e9fee939b3422e73c1a9",
+    "answerId": "6189e9fee939b3422e73c1aa",
+    "response": "Industrial",
+    "status": "pending"
+  },
+  {
+    "surveyId": "6189e9fee939b3422e73c1b4",
+    "answerId": "6189e9fee939b3422e73c1b8",
+    "response": "Account",
+    "status": "completed"
+  }
+]
+
+
+
+### Fetch responses by responseBatchId
+  
+@responseBatchId = 6189eac5e939b3422e73c1c1
+GET {{hostname}}/responses?responseBatchId={{responseBatchId}}
+Content-Type: {{contentType}}
+
+### Fetch responses by surveyBatcvhId
+GET {{hostname}}/responses?surveyBatchId={{batchId}}
+Content-Type: {{contentType}}
+
+### Fetch responses by surveyBatcvhId
+GET {{hostname}}/responses?contextId={{contextId}}
+Content-Type: {{contentType}}
+

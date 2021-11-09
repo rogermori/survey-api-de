@@ -1,0 +1,7 @@
+{
+  "name": "Survey API",
+  "version": "0.1.0",
+  "description": "The REST survey API . This solution simplifies the creation and taking of user surveys.",
+  "title": "Jodel Survey API",
+  "url": "http://localhost:7777/2021-11-01"
+}
